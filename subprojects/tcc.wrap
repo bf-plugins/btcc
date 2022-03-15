@@ -1,0 +1,6 @@
+[wrap-git]
+url = https://github.com/telegraphic/tcc/
+revision = head
+
+[provide]
+subproject_dep = subproject_dep
