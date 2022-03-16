@@ -1,7 +1,7 @@
 
 from bifrost.libbifrost import _check, _get, BifrostObject
 from bifrost.ndarray import asarray
-from build import btcc_generated as _gen
+from . import btcc_generated as _gen
 
 class Btcc(BifrostObject):
     def __init__(self):

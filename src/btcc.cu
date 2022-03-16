@@ -45,18 +45,18 @@
 
 #include <cuda_fp16.h>
 #include "btcc.h"
-#include "libtcc/Correlator.h"
+#include "Correlator.h"
 
 
 // enable full debugging output
-// #define DCP_DEBUG
+#define DCP_DEBUG
 
 // disable ALL sanity checks 
 // ONLY USE FOR SLIGHT INCREASE IN PERFORMANCE ON KNOWN STABLE BUILDS
 // #define NO_CHECKS
 
 // enable timing of the .launchAsync() function
-// #define TIME_CORR
+#define TIME_CORR
 
 #ifdef TIME_CORR
 #include <fstream>

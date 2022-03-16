@@ -6,7 +6,7 @@ A [Bifrost](https://github.com/telegraphic/bifrost) wrapper for the [Tensor-Core
 
 To build BTCC:
 
-1. Install appropriate dependancies
+1. Install appropriate dependencies
    1. Bifrost (https://github.com/telegraphic/bifrost)
    2. Tensor-Core Correlator (https://git.astron.nl/RD/tensor-core-correlator)
    3. Meson build system (https://github.com/mesonbuild/meson)
@@ -15,9 +15,10 @@ To build BTCC:
 4. Compile with meson by running:
 
 ```
-meson setup build
+meson build --prefix=/path/to/install
 cd build
 meson compile
+meson install
 ```
 
 There are several conditional compliation constants included in btcc.cu:
@@ -26,9 +27,20 @@ There are several conditional compliation constants included in btcc.cu:
 * `TIME_CORR`: write all correlation times (ms) to `cuda_results.csv`
 
 
+### Environment variables
+
+Before using, you need to make sure that the shared library and python package can be found. To do this, set:
+
+```bash
+export LD_LIBRARY_PATH=/path/to/install/lib:/path/to/install/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+export PYTHONPATH=/path/to/install/python3.X/site-packages:$PYTHONPATH
+```
+
+Where `/path/to/install` is what you used in `meson build --prefix=/path/to/install`, and `python3.X` is replaced with your python version.
+
 ### Using BTCC in Python
 
-```
+```python
 from btcc import Btcc
 
 tcc = Btcc()

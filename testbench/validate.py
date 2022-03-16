@@ -34,7 +34,7 @@ import time
 import numpy as np
 import bifrost as bf
 from btcc import Btcc
-from bifrost.libbifrost import _bf
+import xcorrlite 
 
 nbits = 16 # number of bits MUST be 16 for current ICRAR hardware (Tesla V100)
 
@@ -103,7 +103,7 @@ def test_correlate(nant, nchan, ntime, npol):
     gen_tcc_re = np.moveaxis(np.squeeze(np.copy(gen_xcorr_re)).reshape(nchan, nant, npol, ntime // n_time_per_block, n_time_per_block), [1,2,3,4], [2,3,1,4]).astype('float16')
     gen_tcc_im = np.moveaxis(np.squeeze(np.copy(gen_xcorr_im)).reshape(nchan, nant, npol, ntime // n_time_per_block, n_time_per_block), [1,2,3,4], [2,3,1,4]).astype('float16')
     end = time.perf_counter()
-    print(f'Reshape to TCC: {start - end} s')
+    print(f'Reshape to TCC: {end - start} s')
 
     tcc_input = bf.ndarray( shape=gen_tcc_re.shape,
                             dtype='cf16',
@@ -130,9 +130,10 @@ def test_correlate(nant, nchan, ntime, npol):
     tcc_output_cpu = tcc_output.copy(space='system')
 
     # execute xcorr_lite correlation
+    print("Running Xcorrlite")
     reset = 1 # TODO: found out what this does...
     xcorr_start = time.perf_counter()
-    _bf.XcorrLite(xcorr_input.as_BFarray(), xcorr_output.as_BFarray(), np.int32(reset))
+    xcorrlite.XcorrLite(xcorr_input.as_BFarray(), xcorr_output.as_BFarray(), np.int32(reset))
     xcorr_end = time.perf_counter()
     xcorr_time = xcorr_end - xcorr_start
     xcorr_output_cpu = np.array(xcorr_output.copy('system'))
@@ -185,10 +186,10 @@ if __name__ == '__main__':
     # npol = 
     # nant = 
 
-    nchan = 240
+    nchan = 100
     ntime = 3072
     npol = 2
-    nant = 576
+    nant = 256
 
     nbaselines = (nant*(nant+1))//2
 
